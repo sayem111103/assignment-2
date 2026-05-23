@@ -2,6 +2,8 @@ import config from "../../config";
 import { pool } from "../../db/db.connection";
 import type { TUser } from "../users/user.types";
 import bcrypt from "bcrypt";
+import type { TLogin } from "./auth.types";
+
 const signUpIntoDB = async (payload: TUser) => {
   const { name, email, role, password } = payload;
   const hashedPassword = await bcrypt.hash(password, config.salt);
@@ -16,4 +18,8 @@ const signUpIntoDB = async (payload: TUser) => {
   return result?.rows[0];
 };
 
-export const authServices = { signUpIntoDB };
+const login = async (payload: TLogin) => {
+    console.log(payload);
+};
+
+export const authServices = { signUpIntoDB, login };

@@ -9,8 +9,19 @@ const signUp = async (req: Request, res: Response) => {
     statusCode: 201,
     success: true,
     message: "User registered successfully",
-    data: result
+    data: result,
   });
 };
 
-export const authController = { signUp };
+const login = async (req: Request, res: Response) => {
+  const data = req.body;
+  const result = await authServices.login(data);
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Login successful",
+    data: result,
+  });
+};
+
+export const authController = { signUp, login };
