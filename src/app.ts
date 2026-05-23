@@ -6,7 +6,9 @@ import express, {
 import sendResponse from "./utils/sendResponse";
 import CookieParser from "cookie-parser";
 import router from "./routes/index.route";
-export const app: Application = express();
+import globalErrorHandler from "./middleware/globalErrorhandler";
+import routeNotFound from "./utils/routeNotFound";
+const app: Application = express();
 
 app.use(CookieParser());
 app.use(express.json());
@@ -21,3 +23,8 @@ app.get("/", (req: Request, res: Response) => {
     message: "server is running!",
   });
 });
+
+app.use(globalErrorHandler);
+app.use(routeNotFound);
+
+export default app;

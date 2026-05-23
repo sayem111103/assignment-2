@@ -5,7 +5,7 @@ dotenv.config({
 });
 
 const config = {
-  environment: process.env.ENVIRONMENT,
+  node_env: process.env.NODE_ENV,
   db_connection: process.env.DB,
   port: process.env.PORT,
 };
