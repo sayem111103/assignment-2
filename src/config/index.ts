@@ -9,6 +9,8 @@ const config = {
   db_connection: process.env.DB,
   port: process.env.PORT,
   salt: Number(process.env.SALT),
+  access: process.env.ACCESSSECRET,
+  refresh: process.env.REFRESHSECRET,
 };
 
 export default config;
