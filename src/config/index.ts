@@ -8,6 +8,7 @@ const config = {
   node_env: process.env.NODE_ENV,
   db_connection: process.env.DB,
   port: process.env.PORT,
+  salt: Number(process.env.SALT),
 };
 
 export default config;
