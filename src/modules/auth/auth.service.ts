@@ -1,8 +1,7 @@
 import config from "../../config";
 import { pool } from "../../db/db.connection";
-import type { TRoles, TUser } from "../users/user.types";
 import bcrypt from "bcrypt";
-import type { TLogin } from "./auth.types";
+import type { TLogin, TRoles, TUser } from "./auth.types";
 import ApiError from "../../error/ApiError";
 import { StatusCodes } from "http-status-codes";
 import { generateToken } from "../../utils/jwtToken";
