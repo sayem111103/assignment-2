@@ -19,7 +19,39 @@ const createIssueIntoDB = async (payload: TIssue) => {
   return result?.rows[0];
 };
 
-const getAllIssueFromDB = async () => {};
+const getAllIssueFromDB = async (query: Record<string, unknown>) => {
+  const issuesResult = await pool.query(`
+    SELECT * FROM issues
+    ${query?.sort ? `ORDER BY created_at ${query.sort === "newest" ? "DESC" : "ASC"}` : "ORDER BY created_at DESC"}
+  `);
+
+  const issues = issuesResult?.rows || [];
+  if (issues.length === 0) return [];
+
+  const reporterIds = [...new Set(issues.map((issue) => issue.reporter_id))];
+
+  const usersResult = await pool.query(
+    `SELECT id, name, role FROM users WHERE id = ANY($1)`,
+    [reporterIds],
+  );
+
+  const userMap = new Map(usersResult?.rows.map((user) => [user.id, user]));
+  return issues.map((issue) => {
+    const { reporter_id, ...issueRest } = issue;
+    const user = userMap.get(reporter_id);
+
+    return {
+      ...issueRest,
+      reporter: user
+        ? {
+            id: user.id,
+            name: user.name,
+            role: user.role,
+          }
+        : null,
+    };
+  });
+};
 
 const getSingleIssueFromDB = async (id: number) => {
   const issueData = await pool.query(

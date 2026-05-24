@@ -18,7 +18,14 @@ const createIssue: RequestHandler = async (req: Request, res: Response) => {
 };
 
 const getAllIssue: RequestHandler = async (req: Request, res: Response) => {
-  console.log(req.query);
+  const query = req.query;
+  const result = await issuesServices.getAllIssueFromDB(query);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Issues retrived successfully",
+    data: result,
+  });
 };
 
 const getSingleIssue: RequestHandler = async (req: Request, res: Response) => {
