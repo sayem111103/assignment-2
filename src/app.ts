@@ -20,7 +20,7 @@ app.get("/", (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: "server is running!",
+    message: "DevPulse server is running!",
   });
 });
 
