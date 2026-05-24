@@ -1,8 +1,11 @@
 import config from "../../config";
 import { pool } from "../../db/db.connection";
-import type { TUser } from "../users/user.types";
+import type { TRoles, TUser } from "../users/user.types";
 import bcrypt from "bcrypt";
 import type { TLogin } from "./auth.types";
+import ApiError from "../../error/ApiError";
+import { StatusCodes } from "http-status-codes";
+import { generateToken } from "../../utils/jwtToken";
 
 const signUpIntoDB = async (payload: TUser) => {
   const { name, email, role, password } = payload;
@@ -19,7 +22,34 @@ const signUpIntoDB = async (payload: TUser) => {
 };
 
 const login = async (payload: TLogin) => {
-    console.log(payload);
+  const userData = await pool.query(
+    `
+    SELECT * FROM users WHERE email=$1      
+    `,
+    [payload?.email],
+  );
+  const { password, ...rest } = userData?.rows[0] as TUser;
+  if (userData.rows.length === 0) {
+    throw new ApiError(
+      "Invalid Credentials User Not Found!!",
+      StatusCodes.NOT_FOUND,
+    );
+  }
+  const isPasswordValid = await bcrypt.compare(payload?.password, password);
+  if (!isPasswordValid) {
+    throw new ApiError("Wrong Password!!", StatusCodes.UNAUTHORIZED);
+  }
+
+  const jwtPayload = {
+    id: rest.id as number,
+    name: rest.name,
+    role: rest.role as TRoles,
+    email: rest.email,
+  };
+  const accessToken = generateToken(jwtPayload, "access", "2h");
+  const refreshToken = generateToken(jwtPayload, "refresh", "1d");
+
+  return { token: accessToken, refreshToken, user: rest };
 };
 
 export const authServices = { signUpIntoDB, login };
