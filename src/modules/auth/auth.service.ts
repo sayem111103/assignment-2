@@ -9,6 +9,15 @@ import { generateToken } from "../../utils/jwtToken";
 const signUpIntoDB = async (payload: TUser) => {
   const { name, email, role, password } = payload;
   const hashedPassword = await bcrypt.hash(password, config.salt);
+  const userData = await pool.query(
+    `
+    SELECT * FROM users WHERE email=$1      
+    `,
+    [email],
+  );
+  if (userData?.rows?.length > 0) {
+    throw new ApiError("User already exists", StatusCodes.CONFLICT);
+  }
   const result = await pool.query(
     `
      INSERT INTO users(name,email,password,role) VALUES($1,$2,$3,COALESCE($4,'user')) 

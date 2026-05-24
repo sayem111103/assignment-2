@@ -62,7 +62,7 @@ const deleteIssue: RequestHandler = async (req: Request, res: Response) => {
     throw new ApiError("failed to delete issue!", StatusCodes.BAD_REQUEST);
   }
   sendResponse(res, {
-    statusCode: StatusCodes.OK,
+    statusCode: StatusCodes.NO_CONTENT,
     success: true,
     message: "Issue deleted successfully",
   });
