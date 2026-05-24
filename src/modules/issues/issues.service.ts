@@ -22,7 +22,7 @@ const createIssueIntoDB = async (payload: TIssue) => {
 const getAllIssueFromDB = async (query: Record<string, unknown>) => {
   const issuesResult = await pool.query(`
     SELECT * FROM issues
-    ${query?.sort ? `ORDER BY created_at ${query.sort === "newest" ? "DESC" : "ASC"}` : "ORDER BY created_at DESC"}
+    ${query?.sort ? `ORDER BY created_at ${query.sort === "newest" ? "DESC" : "ASC"}` : "ORDER BY created_at ASC"}
   `);
 
   const issues = issuesResult?.rows || [];
