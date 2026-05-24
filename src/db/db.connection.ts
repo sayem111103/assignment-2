@@ -23,8 +23,8 @@ export const initDB = async () => {
               id SERIAL PRIMARY KEY,
               title VARCHAR(150),
               description TEXT NOT NULL CHECK (LENGTH(description) >= 20),
-              type VARCHAR(15) NOT NULL CHECK (type IN ('bug', 'feature_request')),
-              status VARCHAR(10) DEFAULT 'open',
+              type VARCHAR(30) NOT NULL CHECK (type IN ('bug', 'feature_request')),
+              status VARCHAR(30) DEFAULT 'open',
               reporter_id INTEGER NOT NULL,
       
               created_at TIMESTAMP DEFAULT NOW(),

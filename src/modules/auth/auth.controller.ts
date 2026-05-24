@@ -1,10 +1,10 @@
-import type { Request, Response } from "express";
+import type { Request, RequestHandler, Response } from "express";
 import sendResponse from "../../utils/sendResponse";
 import { authServices } from "./auth.service";
 import config from "../../config";
 import { StatusCodes } from "http-status-codes";
 
-const signUp = async (req: Request, res: Response) => {
+const signUp: RequestHandler = async (req: Request, res: Response) => {
   const data = req.body;
   const result = await authServices.signUpIntoDB(data);
   sendResponse(res, {
@@ -15,7 +15,7 @@ const signUp = async (req: Request, res: Response) => {
   });
 };
 
-const login = async (req: Request, res: Response) => {
+const login: RequestHandler = async (req: Request, res: Response) => {
   const data = req.body;
   const { refreshToken, ...rest } = await authServices.login(data);
   res.cookie("refreshToken", refreshToken, {
