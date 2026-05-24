@@ -6,6 +6,7 @@ dotenv.config({
 
 const config = {
   node_env: process.env.NODE_ENV,
+  origin: process.env.ORIGIN,
   db_connection: process.env.DB,
   port: process.env.PORT,
   salt: Number(process.env.SALT),
