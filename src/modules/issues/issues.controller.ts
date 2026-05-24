@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 
 const createIssue = async (req: Request, res: Response) => {
   const data = req.body;
+  data.reporter_id = req?.user?.id;
   const result = await issuesServices.createIssueIntoDB(data);
   sendResponse(res, {
     statusCode: StatusCodes.CREATED,
@@ -13,7 +14,6 @@ const createIssue = async (req: Request, res: Response) => {
     data: result,
   });
 };
-
 
 export const issuesController = {
   createIssue,

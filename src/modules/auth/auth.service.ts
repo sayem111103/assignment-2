@@ -16,6 +16,9 @@ const signUpIntoDB = async (payload: TUser) => {
     `,
     [name, email, hashedPassword, role],
   );
+  if (result?.rows?.length === 0) {
+    throw new ApiError("failed to create user", StatusCodes.BAD_REQUEST);
+  }
   delete result?.rows[0]?.password;
   return result?.rows[0];
 };
