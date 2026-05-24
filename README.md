@@ -31,7 +31,7 @@ Ensure you have the following installed:
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/sayem111103/assignment-2.git
-   cd DevPulse
+   cd assignment-2
    ```
 2. **Install dependencies:**
 
